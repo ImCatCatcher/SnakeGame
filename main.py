@@ -64,8 +64,10 @@ while True:
     if key[pg.K_d] and curDir != "a" and curDir != "d":
         dx,dy = 1, 0
         curDir = "d"
+    
+    for i, j in snake:
+        pg.draw.rect(screen, pg.Color("green"), (i,j,20,20))
 
-    [(pg.draw.rect(screen, pg.Color("green"), (i,j,20,20))) for i,j in snake]
     pg.draw.rect(screen, pg.Color("red"),(bonus[0], bonus[1], 20, 20))
 
     curX += dx * 20
