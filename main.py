@@ -62,6 +62,9 @@ while True:
     snake.append((curX, curY))
     snake = snake[-snakeLen:]
 
+    pg.display.flip()
+    clock.tick(fps)
+
     if snake[-1] == bonus.xytuple:
         snakeLen += bonus.lengthMod
         fps += bonus.speedMod
@@ -69,10 +72,7 @@ while True:
 
     for obstacle in obstacles:
         if snake[-1] in set(obstacle.xytuples):
-            functions.exitGame(snakeLen)
-
-    pg.display.flip()
-    clock.tick(fps)    
+            functions.exitGame(snakeLen)    
 
     for event in pg.event.get():
         if event.type == pg.QUIT:
