@@ -1,5 +1,8 @@
 import tkinter as tk
 import pygame as pg
+from random import randint
+
+import Bonuses, Obstacles
 
 def exitGame(snakeLen):
     root = tk.Tk()
@@ -24,25 +27,22 @@ def exitGame(snakeLen):
 
     root.mainloop()
 
-def gameInit():
-    pg.init()
-    screen = pg.display.set_mode((400, 400))
-    pg.display.set_caption("Змейка")
+def generateBonus():
+    match randint(0,2):
+        case 0:
+            bonus = Bonuses.Apple()
+        case 1:
+            bonus = Bonuses.Peach()
+        case 2:
+            bonus = Bonuses.Banana()
+    return bonus
 
-    snakeLen = 1
-    bonus = (randrange(0,400,20),randrange(0,400,20))
-    curX = randrange(0,400,20)
-    curY = randrange(0,400,20)
-    snake = [(curX, curY)] #координаты старта змейки
-
-    changeX, changeY = 0, 0
-    fps = 10
-
-    curDir = ""
-
-    clock = pg.time.Clock()
-
-    return screen
-
-def gameRun():
-    pass
+def generateObstacle():
+    match randint(0,2):
+        case 0:
+            obstacle = Obstacles.LongTrioObstacle(rotated=bool(randint(0,1)))
+        case 1:
+            obstacle = Obstacles.CorneredTrioObstacle(rotated=bool(randint(0,1)))
+        case 2:
+            obstacle = Obstacles.DuoObstacle(rotated=bool(randint(0,1)))
+    return obstacle

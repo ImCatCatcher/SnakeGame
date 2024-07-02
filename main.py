@@ -1,9 +1,27 @@
 import pygame as pg
 from random import randrange
 
-import Classes
+import functions, Bonuses, Obstacles
 
-import functions
+pg.init()
+screen = pg.display.set_mode((400, 400))
+pg.display.set_caption("Змейка")
+
+snakeLen = 1
+curX = randrange(0,400,20)
+curY = randrange(0,400,20)
+snake = [(curX, curY)] #координаты старта змейки
+
+bonus = functions.generateBonus()
+
+obstacles = [functions.generateObstacle() for i in range(2)]
+
+changeX, changeY = 0, 0
+fps = 10
+
+curDir = ""
+
+clock = pg.time.Clock()
 
 while True:
     screen.fill(pg.Color("black"))
@@ -29,7 +47,9 @@ while True:
     for i, j in snake:
         pg.draw.rect(screen, pg.Color("green"), (i,j,20,20))
 
-    pg.draw.rect(screen, pg.Color("red"),(bonus[0], bonus[1], 20, 20))
+    pg.draw.rect(screen, pg.Color(bonus.color),(*bonus.xytuple, 20, 20))
+    
+    [[pg.draw.rect(screen, pg.Color("white"),(*i, 20, 20)) for i in obstacle.xytuples] for obstacle in obstacles]
 
     curX += changeX * 20
     curY += changeY * 20
@@ -42,10 +62,15 @@ while True:
     snake.append((curX, curY))
     snake = snake[-snakeLen:]
 
-    if snake[-1] == bonus:
-        bonus = (randrange(0,400,20),randrange(0,400,20))
-        snakeLen += 1
-        fps += 1
+    if snake[-1] == bonus.xytuple:
+        snakeLen += bonus.lengthMod
+        fps += bonus.speedMod
+        bonus = functions.generateBonus()
+
+    for obstacle in obstacles:
+        for curxytuple in obstacle.xytuples:
+            if snake[-1] == curxytuple:
+                functions.exitGame(snakeLen)
 
     pg.display.flip()
     clock.tick(fps)    
