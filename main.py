@@ -68,9 +68,8 @@ while True:
         bonus = functions.generateBonus()
 
     for obstacle in obstacles:
-        for curxytuple in obstacle.xytuples:
-            if snake[-1] == curxytuple:
-                functions.exitGame(snakeLen)
+        if snake[-1] in set(obstacle.xytuples):
+            functions.exitGame(snakeLen)
 
     pg.display.flip()
     clock.tick(fps)    
