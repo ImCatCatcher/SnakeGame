@@ -2,7 +2,7 @@ import tkinter as tk
 import pygame as pg
 from random import randint
 
-import Bonuses, Obstacles
+import Bonuses, Obstacles, options
 
 def exitGame(snakeLen):
     root = tk.Tk()
@@ -14,7 +14,13 @@ def exitGame(snakeLen):
     msg_label_1 = tk.Label(root, text=f"Счет: {snakeLen}")
     msg_label_1.pack()
 
-    msg_label_2 = tk.Label(root, text=f"Рекорд: 0")
+    with open("best.txt", "r") as f:
+        best = int(f.read())
+    if snakeLen > best:
+        with open("best.txt", "w") as f:
+            f.write(str(snakeLen))
+        best = snakeLen
+    msg_label_2 = tk.Label(root, text=f"Рекорд: {best}")
     msg_label_2.pack()
 
     dismiss_btn = tk.Button(root, text="Выход", command=quit)

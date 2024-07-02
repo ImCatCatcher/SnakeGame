@@ -1,11 +1,13 @@
 from random import randrange
 
+import options
+
 class Apple:
     def __init__(self):
         self.__speedMod = 1
         self.__lengthMod = 1
-        self.__x = randrange(0,400,20)
-        self.__y = randrange(0,400,20)
+        self.__x = randrange(0,options.mapSize,options.cellSize)
+        self.__y = randrange(0,options.mapSize,options.cellSize)
         self.__color = "red"
 
     @property
@@ -30,8 +32,8 @@ class Peach:
     def __init__(self):
         self.__speedMod = 0
         self.__lengthMod = 1
-        self.__x = randrange(0,400,20)
-        self.__y = randrange(0,400,20)
+        self.__x = randrange(0,options.mapSize,options.cellSize)
+        self.__y = randrange(0,options.mapSize,options.cellSize)
         self.__color = "sienna1"
 
     @property
@@ -56,8 +58,8 @@ class Banana:
     def __init__(self):
         self.__speedMod = 0
         self.__lengthMod = 2
-        self.__x = randrange(0,400,20)
-        self.__y = randrange(0,400,20)
+        self.__x = randrange(0,options.mapSize,options.cellSize)
+        self.__y = randrange(0,options.mapSize,options.cellSize)
         self.__color = "yellow"
 
     @property

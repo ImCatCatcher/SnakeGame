@@ -1,15 +1,15 @@
 import pygame as pg
 from random import randrange
 
-import functions, Bonuses, Obstacles
+import functions, Bonuses, Obstacles, options
 
 pg.init()
-screen = pg.display.set_mode((400, 400))
+screen = pg.display.set_mode((options.mapSize, options.mapSize))
 pg.display.set_caption("Змейка")
 
 snakeLen = 1
-curX = randrange(0,400,20)
-curY = randrange(0,400,20)
+curX = randrange(0,options.mapSize,options.cellSize)
+curY = randrange(0,options.mapSize,options.cellSize)
 snake = [(curX, curY)] #координаты старта змейки
 
 bonus = functions.generateBonus()
@@ -17,7 +17,7 @@ bonus = functions.generateBonus()
 obstacles = [functions.generateObstacle() for i in range(2)]
 
 changeX, changeY = 0, 0
-fps = 10
+fps = options.startFPS
 
 curDir = ""
 
@@ -44,20 +44,19 @@ while True:
         changeX,changeY = 1, 0
         curDir = "d"
     
-    for i, j in snake:
-        pg.draw.rect(screen, pg.Color("green"), (i,j,20,20))
+    [pg.draw.rect(screen, pg.Color("green"), (i,j,options.cellSize,options.cellSize)) for i, j in snake]
 
-    pg.draw.rect(screen, pg.Color(bonus.color),(*bonus.xytuple, 20, 20))
+    pg.draw.rect(screen, pg.Color(bonus.color),(*bonus.xytuple, options.cellSize, options.cellSize))
     
-    [[pg.draw.rect(screen, pg.Color("white"),(*i, 20, 20)) for i in obstacle.xytuples] for obstacle in obstacles]
+    [[pg.draw.rect(screen, pg.Color("white"),(*i, options.cellSize, options.cellSize)) for i in obstacle.xytuples] for obstacle in obstacles]
 
-    curX += changeX * 20
-    curY += changeY * 20
+    curX += changeX * options.cellSize
+    curY += changeY * options.cellSize
 
-    if curX > 400: curX = 0
-    if curX < 0:   curX = 400
-    if curY > 400: curY = 0
-    if curY < 0:   curY = 400
+    if curX > options.mapSize: curX = 0
+    if curX < 0:   curX = options.mapSize
+    if curY > options.mapSize: curY = 0
+    if curY < 0:   curY = options.mapSize
 
     snake.append((curX, curY))
     snake = snake[-snakeLen:]
@@ -67,7 +66,7 @@ while True:
 
     if snake[-1] == bonus.xytuple:
         snakeLen += bonus.lengthMod
-        fps += bonus.speedMod
+        fps += bonus.speedMod*options.baseSpeedMultiplier
         bonus = functions.generateBonus()
 
     for obstacle in obstacles:
