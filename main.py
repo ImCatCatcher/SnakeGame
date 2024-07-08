@@ -3,6 +3,11 @@ from random import randrange
 
 import functions, Bonuses, Obstacles, options
 
+functions.askDifficulty()
+modifyDifficulty = functions.getGeneratedDifficulty()
+
+print(modifyDifficulty)
+
 pg.init()
 screen = pg.display.set_mode((options.mapSize, options.mapSize))
 pg.display.set_caption("Змейка")
@@ -13,11 +18,10 @@ curY = randrange(0,options.mapSize,options.cellSize)
 snake = [(curX, curY)] #координаты старта змейки
 
 bonus = functions.generateBonus()
-
-obstacles = [functions.generateObstacle() for i in range(2)]
+obstacles = [functions.generateObstacle() for i in range(3+options.hardcoreObstacleMultiplier*modifyDifficulty)]
 
 changeX, changeY = 0, 0
-fps = options.startFPS
+fps = options.startFPS+options.hardcoreSpeedMultiplier*modifyDifficulty
 
 curDir = ""
 
@@ -53,9 +57,9 @@ while True:
     curX += changeX * options.cellSize
     curY += changeY * options.cellSize
 
-    if curX > options.mapSize: curX = 0
+    if curX == options.mapSize: curX = 0
     if curX < 0:   curX = options.mapSize
-    if curY > options.mapSize: curY = 0
+    if curY == options.mapSize: curY = 0
     if curY < 0:   curY = options.mapSize
 
     snake.append((curX, curY))
@@ -66,7 +70,7 @@ while True:
 
     if snake[-1] == bonus.xytuple:
         snakeLen += bonus.lengthMod
-        fps += bonus.speedMod*options.baseSpeedMultiplier
+        fps += bonus.speedMod+modifyDifficulty
         bonus = functions.generateBonus()
 
     for obstacle in obstacles:

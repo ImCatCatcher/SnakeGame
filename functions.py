@@ -1,8 +1,11 @@
 import tkinter as tk
 import pygame as pg
 from random import randint
+import os
 
 import Bonuses, Obstacles, options
+
+difficulty = 0
 
 def exitGame(snakeLen):
     root = tk.Tk()
@@ -23,13 +26,12 @@ def exitGame(snakeLen):
     msg_label_2 = tk.Label(root, text=f"Рекорд: {best}")
     msg_label_2.pack()
 
-    dismiss_btn = tk.Button(root, text="Выход", command=quit)
-    dismiss_btn.pack()
+    restart_btn = tk.Button(root, text="Рестарт", command=restartGame)
+    restart_btn.pack()
 
     root.title("Змейка")
     root.geometry("250x100")
     root.resizable(False, False)
-    root.configure(bg="white")
 
     root.mainloop()
 
@@ -52,3 +54,39 @@ def generateObstacle():
         case 2:
             obstacle = Obstacles.DuoObstacle(rotated=bool(randint(0,1)))
     return obstacle
+
+def restartGame():
+    os.system("python3 main.py")
+    quit()
+
+def askDifficulty():
+    global difficulty
+
+    def classic():
+        global difficulty
+        difficulty = 0
+        root.destroy()
+    
+    def hardcore():
+        global difficulty
+        difficulty = 1
+        root.destroy()
+
+    root = tk.Tk()
+
+    tk.Label(root, text="Выберите сложность игры").pack()
+
+    tk.Button(root, text="Обычная", command=classic).pack()
+
+    tk.Button(root, text="Хардкор", command=hardcore).pack()
+
+    root.title("Змейка")
+    root.geometry("250x100")
+    root.resizable(False, False)
+
+    root.protocol("WM_DELETE_WINDOW", quit)
+    root.mainloop()
+
+def getGeneratedDifficulty():
+    global difficulty
+    return difficulty
