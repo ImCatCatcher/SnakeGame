@@ -49,6 +49,7 @@ while True:
         curDir = "d"
     
     [pg.draw.rect(screen, pg.Color("green"), (i,j,options.cellSize,options.cellSize)) for i, j in snake]
+    pg.draw.rect(screen, pg.Color("orange"), (snake[-1][0], snake[-1][1], options.cellSize, options.cellSize))
 
     pg.draw.rect(screen, pg.Color(bonus.color),(*bonus.xytuple, options.cellSize, options.cellSize))
     
